@@ -7,10 +7,10 @@
 		</el-breadcrumb>
 		
 		<div class="search">
-			<el-input placeholder="请输入内容"  class="input-with-select">
+			<el-input v-model="query" placeholder="请输入内容"  class="input-with-select">
 				<el-button slot="append" icon="el-icon-search"></el-button>	
 			</el-input>
-			 <el-button type="success">主要按钮</el-button>
+			 <el-button type="success" @click="serch">主要按钮</el-button>
 		</div>
 		<template>
 		<!-- 表格不需要循环数据，只需将数据传给table即可 -->
@@ -85,14 +85,16 @@
 		//总条数
 		total:10,
 		//当前页
-		pagenum:1
+		pagenum:1,
+		//查询条件
+		query:""
       }
     },
 	methods:{
 		//获取角色分页列表
 		getUserPage(){
 			this.$http.get("/userPage",{
-				params:{query:"",pageIndex:this.pagenum,pageSize:this.pagesize}
+				params:{query:this.query,pageIndex:this.pagenum,pageSize:this.pagesize}
 			}).then(res=>{
 				//返回总条数
 				this.total=res.data.total
@@ -120,6 +122,10 @@
 		this.pagenum=val
 		this.getUserPage()
         console.log(`当前页: ${val}`);
+		},
+		//搜索按钮
+		serch(){
+			this.getUserPage()
 		}
 		
 	},

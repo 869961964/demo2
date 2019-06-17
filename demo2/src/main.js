@@ -25,18 +25,18 @@ Vue.config.productionTip = false
 Vue.use(ElementUI);
 
 //路由全局守卫
-router.beforeEach((to,from,next)=>{
-	let token = localStorage.getItem('token')
-	if(token){
-		next()
-	}else{
-		if(to.path=="/"){
-			next()
-		}else{
-			next("/")
-		}
-	}
-	})
+// router.beforeEach((to,from,next)=>{
+// 	let token = localStorage.getItem('token')
+// 	if(token){
+// 		next()
+// 	}else{
+// 		if(to.path=="/"){
+// 			next()
+// 		}else{
+// 			next("/")
+// 		}
+// 	}
+// 	})
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
