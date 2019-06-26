@@ -53,6 +53,7 @@
 				username: this.loginForm.username,
 				password: this.loginForm.password
 			}).then((response)=> {
+				//将tokeny与userid存到loacalStorage中
 				localStorage.setItem("token",response.data.token)
 				localStorage.setItem("userID",response.data.userName)
 				 this.$message({
