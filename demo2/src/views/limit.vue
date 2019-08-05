@@ -3,15 +3,19 @@
 		<el-breadcrumb separator="/">
 		  <el-breadcrumb-item :to="{ path: '/home/index' }">首页</el-breadcrumb-item>
 		  <el-breadcrumb-item :to="{ path: '/home' }">权限管理</el-breadcrumb-item>
-		  <el-breadcrumb-item>角色列表</el-breadcrumb-item>
+		  <el-breadcrumb-item>权限列表</el-breadcrumb-item>
 		</el-breadcrumb>
-		<el-divider></el-divider><!-- 分割线 -->
+		<el-divider></el-divider>
 		<div class="search">
-			<el-input v-model="query" placeholder="请输入内容"  class="input-with-select">
-				<el-button slot="append" icon="el-icon-search"></el-button>	
+			角色ID：
+			<el-input v-model="query" placeholder="请输入角色ID" style="width: 20%;" >
 			</el-input>
-			 <el-button type="success" @click="serch" round  >搜索</el-button>
-			  <el-button type="primary" @click="addUser" round class="el-icon-circle-plus-outline" style="background: ;">新增用户</el-button>
+			角色名称：
+			<el-input v-model="role_name" placeholder="请输入角色名称" style="width: 20%;" >
+			</el-input>
+			 <el-button type="success" @click="serch">搜索</el-button>
+			  <el-button type="primary" @click="rest">重置</el-button>
+			   <el-button  @click="add_limit" round style="margin-left: 180px;" class="el-icon-circle-plus">添加</el-button>
 		</div>
 		<template>
 		<!-- 表格不需要循环数据，只需将数据传给table即可 -->
@@ -24,23 +28,9 @@
 			  width="50">
 			</el-table-column>
 			<el-table-column
-			  prop="date"
-			  label="日期"
+			  prop="roleId"
+			  label="角色ID"
 			  width="180">
-			</el-table-column>
-			<el-table-column
-			  prop="userName"
-			  label="姓名"
-			  width="130">
-			</el-table-column>
-			<el-table-column
-			  prop="email"
-			  label="邮箱">
-			</el-table-column>
-			<el-table-column
-			  min-width="40%"
-			  prop="sex"
-			  label="性别">
 			</el-table-column>
 			<el-table-column
 			  prop="roleName"
@@ -48,25 +38,20 @@
 			  width="130">
 			</el-table-column>
 			<el-table-column
-			  min-width="40%"
-			  prop="sex"
-			  label="用户状态">
-			   <template slot-scope="item">
-				  <!-- item.row是每一行的数据 -->
-				   <el-switch
-				    v-model="item.row.userStatus"
-					active-color="#13ce66"
-					inactive-color="#ff4949"
-					@change="saveSwitch(item.row)">
-					</el-switch>
-			 </template>	  
+			  prop="roleLevel"
+			  label="角色级别"
+			   width="130">
+			</el-table-column>
+			<el-table-column
+			  width="130"
+			  prop="roleDef"
+			  label="默认角色">
 			</el-table-column>
 			<el-table-column
 			  prop=""
 			  label="操作">
 			  <template slot-scope="item">
 			   <el-button type="primary" icon="el-icon-edit" circle  @click="userEdit(item.row)" ></el-button>
-			   <el-button type="success" icon="el-icon-unlock" circle @click="modify_limit(item.row)"></el-button>
 			   <el-button type="danger" icon="el-icon-delete" circle @click="deleteUser(item.row)"></el-button>
 			    </template>	  
 			</el-table-column>
@@ -89,7 +74,7 @@
       return {
         tableData: [],
 		// 每页显示条数
-		pagesize:8,
+		pagesize:10,
 		//总条数
 		total:10,
 		//当前页
@@ -97,13 +82,14 @@
 		//查询条件
 		query:"",
 		//删除返回数据
-		msg:""
+		msg:"",
+		role_name:""
       }
     },
 	methods:{
 		//获取角色分页列表
 		getUserPage(){
-			this.$http.get("/user/userPage",{
+			this.$http.get("/limit/limit",{
 				params:{query:this.query,pageIndex:this.pagenum,pageSize:this.pagesize}
 			}).then(res=>{
 				//返回总条数
@@ -137,23 +123,23 @@
 		serch(){
 			this.getUserPage()
 		},
-		//新增用户
-		addUser(){
-			this.$router.replace({ name: 'userEdit', 
+		//重置
+		rest(){
+			this.query=""
+			this.role_name=""
+		},
+		//新增权限
+		add_limit(){
+			this.$router.replace({ name: 'limitEdit', 
 			 params: { item:"add"},
 			})
 		},
 		//用户信息回显
 		userEdit(item){
 			//alert(item.id)
-		 this.$router.push({ name: 'userEdit',
+		 this.$router.push({ name: 'limitEdit',
 		  params: { item:item},
 		  });	
-		},
-		modify_limit(item){
-		 this.$router.replace({ name: 'modfiyLimit', 
-		  params: { item:item},
-			})
 		},
 		//确认删除
 		deleteUser(item) {
@@ -192,7 +178,7 @@
 		font-size:18px;
 	}
 	.search{
-		margin: 10px 0;
+		margin: 10px 0; 
 		.el-input-group{
 			width: 47%;
 			margin-right: 5px;

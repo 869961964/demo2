@@ -1,15 +1,15 @@
 <template>
 	<div>
 		<el-breadcrumb separator="/">
-		  <el-breadcrumb-item :to="{ path: '/home/index' }">首页</el-breadcrumb-item>
-		  <el-breadcrumb-item>消息通知</el-breadcrumb-item>
+		  <el-breadcrumb-item ></el-breadcrumb-item>
+		  <el-breadcrumb-item>App公告</el-breadcrumb-item>
 		</el-breadcrumb>
 		<el-divider></el-divider>
 		<div class="search">
 			<el-input v-model="query" placeholder="请输入内容"  class="input-with-select">
 				<el-button slot="append" icon="el-icon-search"></el-button>	
 			</el-input>
-			 <el-button type="primary" round @click="serch">筛选</el-button>
+			 <el-button  round @click="serch">筛选</el-button>
 		</div>
 		<template>
 		<!-- 表格不需要循环数据，只需将数据传给table即可 -->
@@ -24,17 +24,17 @@
 					  width="50">
 					</el-table-column>
 		  			<el-table-column
-		  			  prop="userId"
+		  			  prop="userName"
 		  			  label="姓名"
 		  			  width="180">
 		  			</el-table-column>
 		  			<el-table-column
-		  			  prop="message"
+		  			  prop="userMsg"
 		  			  label="公告消息">
 		  			</el-table-column>
 					<el-table-column
-					  prop="readStuts"
-					  label="查看情况"
+					  prop="sendStuts"
+					  label="推送情况"
 					  width="130">
 					</el-table-column>
 		  			<el-table-column
@@ -47,7 +47,7 @@
 		  			  label="操作"
 					  width="130">
 					   <template slot-scope="item">
-					   <el-button type="success" icon="el-icon-check" circle @click="readOk(item.row)"></el-button>
+					   <el-button type="success" icon="el-icon-s-promotion" circle @click="sendMsg(item.row)"></el-button>
 		  			   <el-button type="danger" icon="el-icon-delete" circle @click="deleteMsg(item.row)"></el-button>
 					   </template>	  
 		  			</el-table-column>
@@ -82,42 +82,53 @@
 	methods:{
 		//获取WebSosgcket消息分页列表
 		getWebSocketMsg(){
-			let userID = localStorage.getItem("userID");
-			this.$http.get("/websocket/getWebSocketMsge", {
-			　　params: { 'userId': userID,pageIndex:this.pagenum,pageSize:this.pagesize }
+			this.$http.get("/appWebsocket/getAppMsge", {
+			　　params: { 'userName': "lisi",pageIndex:this.pagenum,pageSize:this.pagesize }
 			}).then(res=>{			
 			this.total=res.data.total
 			this.tableData=res.data.list
 			})
 		},
 		// 消息已读事件
-		readOk(item){
-			console.log(item.id)
-			this.$http.get("/websocket/readOk", {
-			　　params: { id: item.id,"read":item.readStuts }
-			}).then(res=>{			
-			this.getWebSocketMsg()
-			})
-			 this.$message({
-				  showClose: true,
-				  message: '修改已读/未读成功！',
-				  type: 'success'
-				});
-		},
-		//删除公告消息
-		deleteMsg(item){
-			this.$http.get("/websocket/deleteMsg", {
-			　　params: { id: item.id }
+		sendMsg(item){
+			console.log(item.sendStuts)
+			this.$http.get("/appWebsocket/sendMsg", {
+			　　params: { id: item.id,"sendStuts":item.sendStuts }
 			}).then(res=>{			
 			this.getWebSocketMsg()
 			this.$message({
-				  showClose: true,
-				  message: ""+res.data.code,
-				  type: 'success'
-				});
+							  showClose: true,
+							  message: res.data,
+							  type: 'success'
+							});
 			})
-			
+			 
 		},
+		//删除公告消息
+		deleteMsg(item){
+			this.$confirm('此操作将永久删除该用户, 是否继续?', '提示', {
+				  confirmButtonText: '确定',
+				  cancelButtonText: '取消',
+				  type: 'warning'
+			}).then(() => {
+					this.$http.get("/appWebsocket/deleteMsg", {
+				　　params: { id: item.id }
+				}).then(res=>{			
+				this.getWebSocketMsg()
+				this.$message({
+					  showClose: true,
+					  message: ""+res.data.code,
+					  type: 'success'
+					});
+				})
+			}).catch(() => {
+					this.$message({
+						type: 'info',
+						message: '已取消删除'
+					  });          
+				});
+	   },
+		
 		//改变每页显示多少条数据事件
 		handleSizeChange(val) {
         console.log(`每页 ${val} 条`);

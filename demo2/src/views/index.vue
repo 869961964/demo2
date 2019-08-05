@@ -1,32 +1,31 @@
 <template>
-	<div >
-		<section class="data_section">
+	<div>
 		
-			<el-row :gutter="20" style="margin-bottom: 10px;">
-                <el-col :span="4"><div class="data_list today_head"><span class="data_num head">当日数据：</span></div></el-col>
-				<el-col :span="4"><div class="data_list"><span class="data_num">180</span> 新增用户</div></el-col>
-				<el-col :span="4"><div class="data_list"><span class="data_num">180</span> 新增订单</div></el-col>
-                <el-col :span="4"><div class="data_list"><span class="data_num">180</span> 新增管理员</div></el-col>
-				
-			</el-row>
-            <el-row :gutter="20">
-                <el-col :span="4"><div class="data_list all_head"><span class="data_num head">总数据：</span></div></el-col>
-                <el-col :span="4"><div class="data_list"><span class="data_num">180</span> 注册用户</div></el-col>
-                <el-col :span="4"><div class="data_list"><span class="data_num">180</span> 订单</div></el-col>
-                <el-col :span="4"><div class="data_list"><span class="data_num">180</span> 管理员</div></el-col>
-				<el-col :span="4"><div class="data_list"><span class="data_num">180</span> 管理员</div></el-col>
-            </el-row>
-		</section>
+	 <el-carousel :interval="5000"  type="card" height="200px"  @change="carouselChange">
+		<el-carousel-item v-for="(img,index) in imgList" :key="index">
+		  <img style="height: 100%;width: 100%;" v-bind:src="img.url" text="">
+		 
+		</el-carousel-item>
 		
-		<!-- <div id="myChart" :style="{width: '1000px', height: '550px'}"></div>
-	 -->
-		<div class="block">
-		  <span class="demonstration">多选选择任意一级选项</span>
-		  <el-cascader
-			:options="options"
-			:props="{ multiple: true, checkStrictly: true }"
-			clearable></el-cascader>
-		</div>
+	</el-carousel>
+	<section class="data_section">
+	
+		<el-row :gutter="20" style="margin-bottom: 10px;">
+			<el-col :span="4"><div class="data_list all_head"><span class="data_num head">{{data[0]}}数据：</span></div></el-col>
+			<el-col :span="4"><div class="data_list"><span class="data_num">{{data[1]}}</span> 总数</div></el-col>
+			<el-col :span="4"><div class="data_list"><span class="data_num">{{data[2]}}</span> 正常</div></el-col>
+			<el-col :span="4"><div class="data_list"><span class="data_num">{{data[3]}}</span> 异常</div></el-col>
+			
+		</el-row>
+	  <!--  <el-row :gutter="20">
+			<el-col :span="4"><div class="data_list all_head"><span class="data_num head">总数据：</span></div></el-col>
+			<el-col :span="4"><div class="data_list"><span class="data_num">180</span> 注册用户</div></el-col>
+			<el-col :span="4"><div class="data_list"><span class="data_num">180</span> 订单</div></el-col>
+			<el-col :span="4"><div class="data_list"><span class="data_num">180</span> 管理员</div></el-col>
+			<el-col :span="4"><div class="data_list"><span class="data_num">180</span> 管理员</div></el-col>
+		</el-row> -->
+	</section>
+		<div id="myChart" style="width: 900px; height: 550px;margin-top: -50px;"></div>
 		
 	 </div>
 </template>
@@ -39,241 +38,85 @@ export default {
   data () {
     return {
       msg: 'Welcome to Your Vue.js App',
-	  options: [{
-          value: 'zhinan',
-          label: '指南',
-          children: [{
-            value: 'shejiyuanze',
-            label: '设计原则',
-            children: [{
-              value: 'yizhi',
-              label: '一致'
-            }, {
-              value: 'fankui',
-              label: '反馈'
-            }, {
-              value: 'xiaolv',
-              label: '效率'
-            }, {
-              value: 'kekong',
-              label: '可控'
-            }]
-          }, {
-            value: 'daohang',
-            label: '导航',
-            children: [{
-              value: 'cexiangdaohang',
-              label: '侧向导航'
-            }, {
-              value: 'dingbudaohang',
-              label: '顶部导航'
-            }]
-          }]
-        }, {
-          value: 'zujian',
-          label: '组件',
-          children: [{
-            value: 'basic',
-            label: 'Basic',
-            children: [{
-              value: 'layout',
-              label: 'Layout 布局'
-            }, {
-              value: 'color',
-              label: 'Color 色彩'
-            }, {
-              value: 'typography',
-              label: 'Typography 字体'
-            }, {
-              value: 'icon',
-              label: 'Icon 图标'
-            }, {
-              value: 'button',
-              label: 'Button 按钮'
-            }]
-          }, {
-            value: 'form',
-            label: 'Form',
-            children: [{
-              value: 'radio',
-              label: 'Radio 单选框'
-            }, {
-              value: 'checkbox',
-              label: 'Checkbox 多选框'
-            }, {
-              value: 'input',
-              label: 'Input 输入框'
-            }, {
-              value: 'input-number',
-              label: 'InputNumber 计数器'
-            }, {
-              value: 'select',
-              label: 'Select 选择器'
-            }, {
-              value: 'cascader',
-              label: 'Cascader 级联选择器'
-            }, {
-              value: 'switch',
-              label: 'Switch 开关'
-            }, {
-              value: 'slider',
-              label: 'Slider 滑块'
-            }, {
-              value: 'time-picker',
-              label: 'TimePicker 时间选择器'
-            }, {
-              value: 'date-picker',
-              label: 'DatePicker 日期选择器'
-            }, {
-              value: 'datetime-picker',
-              label: 'DateTimePicker 日期时间选择器'
-            }, {
-              value: 'upload',
-              label: 'Upload 上传'
-            }, {
-              value: 'rate',
-              label: 'Rate 评分'
-            }, {
-              value: 'form',
-              label: 'Form 表单'
-            }]
-          }, {
-            value: 'data',
-            label: 'Data',
-            children: [{
-              value: 'table',
-              label: 'Table 表格'
-            }, {
-              value: 'tag',
-              label: 'Tag 标签'
-            }, {
-              value: 'progress',
-              label: 'Progress 进度条'
-            }, {
-              value: 'tree',
-              label: 'Tree 树形控件'
-            }, {
-              value: 'pagination',
-              label: 'Pagination 分页'
-            }, {
-              value: 'badge',
-              label: 'Badge 标记'
-            }]
-          }, {
-            value: 'notice',
-            label: 'Notice',
-            children: [{
-              value: 'alert',
-              label: 'Alert 警告'
-            }, {
-              value: 'loading',
-              label: 'Loading 加载'
-            }, {
-              value: 'message',
-              label: 'Message 消息提示'
-            }, {
-              value: 'message-box',
-              label: 'MessageBox 弹框'
-            }, {
-              value: 'notification',
-              label: 'Notification 通知'
-            }]
-          }, {
-            value: 'navigation',
-            label: 'Navigation',
-            children: [{
-              value: 'menu',
-              label: 'NavMenu 导航菜单'
-            }, {
-              value: 'tabs',
-              label: 'Tabs 标签页'
-            }, {
-              value: 'breadcrumb',
-              label: 'Breadcrumb 面包屑'
-            }, {
-              value: 'dropdown',
-              label: 'Dropdown 下拉菜单'
-            }, {
-              value: 'steps',
-              label: 'Steps 步骤条'
-            }]
-          }, {
-            value: 'others',
-            label: 'Others',
-            children: [{
-              value: 'dialog',
-              label: 'Dialog 对话框'
-            }, {
-              value: 'tooltip',
-              label: 'Tooltip 文字提示'
-            }, {
-              value: 'popover',
-              label: 'Popover 弹出框'
-            }, {
-              value: 'card',
-              label: 'Card 卡片'
-            }, {
-              value: 'carousel',
-              label: 'Carousel 走马灯'
-            }, {
-              value: 'collapse',
-              label: 'Collapse 折叠面板'
-            }]
-          }]
-        }, {
-          value: 'ziyuan',
-          label: '资源',
-          children: [{
-            value: 'axure',
-            label: 'Axure Components'
-          }, {
-            value: 'sketch',
-            label: 'Sketch Templates'
-          }, {
-            value: 'jiaohu',
-            label: '组件交互文档'
-          }]
-        }]
-    }
+	  show1:true,
+	  imgList:[
+        {url:require('../assets/xian.jpg')},
+        {url:require('../assets/jiangsu.jpg')},
+		{url:require('../assets/pingyao.jpg')},
+		{url:require('../assets/anhui.jpg')},
+		{url:require('../assets/beijing.png')}
+      ],
+	  data:["",,,]
+	  }
   },
   mounted(){
     this.drawLine();
   },
   methods: {
+	carouselChange: function(key1, key2) {
+		if(key1==0){this.data=["西安",42,21,21]}
+		if(key1==1){this.data=["江苏",25,13,12]}
+		if(key1==2){this.data=["平遥",36,20,16]}
+		if(key1==3){this.data=["安徽",50,48,2]}
+		if(key1==4){this.data=["北京",47,35,12]}
+    },
     drawLine(){
         // 基于准备好的dom，初始化echarts实例
         let myChart = this.$echarts.init(document.getElementById('myChart'))
         // 绘制图表
-        myChart.setOption({
-            title: { 
-				text: '在Vue中使用echarts',
-				
+//         myChart.setOption({
+//             title: { 
+// 				text: '各地区井盖数量',
+// 				
+// 				},
+//             tooltip: {},
+//             xAxis: {
+//                 data: ["西安","安徽","江苏","北京","平遥"]
+//             },
+//             yAxis: {},
+//             series: [{
+//                 name: '参数值：',
+//                 type: 'bar',
+//                 data: [5, 20, 36, 10, 10],
+// 				itemStyle: { 
+// 					normal: {
+// 					 //随机显示
+// 						color:function(params){
+// 							if (params.data == 1) {
+// 								return "#FFBA4A";
+// 							}else if (params.data == 2) {
+// 								return "#52BA9F";
+// 							}else {
+// 								return "#007F5E";
+// 							}   
+// 						 } 
+// 					}
+// 				}
+//             }],
+//         });
+		myChart.setOption({ 
+				legend: {},
+				tooltip: {},
+				dataset: {
+					source: [
+						['product', '总数', '正常', '异常'],
+						['西安', 42, 21, 21],
+						['江苏', 25, 13, 12],
+						['平遥', 36, 20, 16],
+						['安徽', 50, 48, 2],
+						['北京', 47, 35, 12],
+					]
 				},
-            tooltip: {},
-            xAxis: {
-                data: ["温度","湿度","位移","压力","浓度","水位"]
-            },
-            yAxis: {},
-            series: [{
-                name: '参数值：',
-                type: 'bar',
-                data: [5, 20, 36, 10, 10, 20],
-				itemStyle: { 
-					normal: {
-					 //随机显示
-						color:function(params){
-							if (params.data == 1) {
-								return "#FFBA4A";
-							}else if (params.data == 2) {
-								return "#52BA9F";
-							}else {
-								return "#007F5E";
-							}   
-						 } 
-					}
-				}
-            }],
-        });
+				xAxis: {type: 'category'},
+				yAxis: {},
+				// Declare several bar series, each will be mapped
+				// to a column of dataset.source by default.
+				series: [
+					{type: 'bar'},
+					{type: 'bar'},
+					{type: 'bar'}
+				]
+			});
     }
   }
 }
@@ -283,6 +126,7 @@ export default {
 .data_section{
 		padding: 20px;
 		margin-bottom: 40px;
+		margin-left: -15px;
 		.section_title{
 			text-align: center;
 			font-size: 30px;
@@ -319,4 +163,21 @@ export default {
         margin-right: 20px;
         margin-top: 5px;
     }
+	
+  .el-carousel__item h3 {
+    color: #475669;
+    font-size: 14px;
+    opacity: 0.75;
+    line-height: 200px;
+    margin: 0 250px;
+  }
+  
+  .el-carousel__item:nth-child(2n) {
+    	 background-color: #99a9bf;
+  }
+  
+  .el-carousel__item:nth-child(2n+1) {
+    background-color: #d3dce6;
+  }
+
 </style>

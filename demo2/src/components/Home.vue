@@ -5,7 +5,8 @@
 				<div class="logo">
 				<img 
                   style="width: 100%; height: 60px" 
-				  src="../assets/logo.jpg" ></img>
+				  src="../assets/logo.jpg" 
+				  v-show="logoShow"></img>
 				</div>
 				<el-menu
 						default-active="2"
@@ -13,7 +14,7 @@
 						@open="handleOpen" 
 						@close="handleClose" 
 						:collapse="isCollapse"
-						background-color="#48576a"
+						background-color="#324157"
 						text-color="#fff"
 						active-text-color="yellow"
 						:router="true"><!-- 菜单导航中开启路由 -->
@@ -30,13 +31,13 @@
 					<!-- //顶部代码 -->
 					<el-header>
 						<i class="el-icon-menu" @click="openanclose" ></i>
-						<h3>后台管理系统</h3>
+						<h3>智能井盖管理系统</h3>
 						<!-- 警告提示标记 -->
-						<el-badge :value="200" :max="99" class="item" style="left: 280px;">
-						  <i class="el-icon-warning-outline" > </i>
+						<el-badge :value="200" :max="99" class="item" style="left: 26%; top:5%;">
+						  <i class="el-icon-star-off" > </i>
 						</el-badge>
 						<el-col :span="4" class="userinfo"  >
-							<el-dropdown trigger="hover" style="left: 50px; margin-left: 45px;">	
+							<el-dropdown trigger="hover" style="left: 60%; ">	
 								<span class="el-dropdown-link userinfo-inner">
 									<!-- 头像 -->
 									<el-avatar :size="40"  style="margin-bottom: -1px; right: 25px;">
@@ -83,7 +84,8 @@ export default {
 	 isCollapse: false,
 	 menucolor:"",
 	 activewidth:"200px",
-	 message:""
+	 message:"",
+	 logoShow:true
     }	
   },
   methods:{
@@ -122,11 +124,12 @@ export default {
 	 openanclose(){
 		 if(this.activewidth=="200px"){
 			  this.activewidth="80px"
-			 this.isCollapse=true 
+			  this.isCollapse=true 
+			  this.logoShow=false
 		 }else{
 			  this.isCollapse=false 
 			  this.activewidth="200px"
-			 
+			  this.logoShow=true
 		 }
 	   },
 	   //websocket操作
@@ -193,14 +196,14 @@ export default {
 			height: 100%;
 			.el-aside{
 				width:100px;
-				background:#48576a;
+				background:#324157;
 				.logo{
 					height: 60px;
-					background:cadetblue;
+					background:#324157;
 				}
 			}
 		.el-header{
-			background:cadetblue;
+			background:#324157;
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
