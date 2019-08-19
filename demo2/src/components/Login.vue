@@ -22,7 +22,7 @@
 	  <el-checkbox class="login_remember" v-model="checked"
                  label-position="left">记住密码</el-checkbox>
       <el-form-item>
-        <el-button type="primary" style="width:100%;" :loading="loading" @click.native.prevent="handleLogin">
+        <el-button type="primary" style="width:100%;" :loading="loading" @click.native.prevent="handleLogin" @keyup.enter.native="loginEnter('loginData')" >
           登录
         </el-button>
       </el-form-item>
@@ -52,21 +52,48 @@
        	username: this.loginForm.username,
        	password: this.loginForm.password
        }).then((response)=> {
-       	//将tokeny与userid存到loacalStorage中
-       	localStorage.setItem("token",response.data.token)
-       	localStorage.setItem("userID",response.data.userName)
-       	 this.$message({
-       		message: '恭喜你，登陆成功！',
-       		type: 'success'
-       	});
-       	//console.log(response.data.token);
-       	this.$router.replace({path: '/home'})  
+			//将tokeny与userid存到loacalStorage中
+			if(response.data.token==""){
+				this.$message({
+					message: response.data.data,
+					type: 'error'
+				});
+			}else{
+				localStorage.setItem("token",response.data.token)
+				localStorage.setItem("userID",response.data.data)
+				this.$message({
+					message: '恭喜你，登陆成功！',
+					type: 'success'
+				});
+				// 在请求成功后把document.onkeydown置为undefined
+				document.onkeydown = undefined;
+				//console.log(response.data.token);
+				this.$router.replace({path: '/home'})  
+			}	
        }).catch(function (error) {
        	console.log(error);
        });
 				//this.$router.replace({path: '/home'})  
-      }
-    }
+      },
+			//按ENTER键登陆
+			loginEnter(){
+				this.handleLogin()
+			}
+    },
+		created(){
+			//绑定enter按键登陆
+			var _self = this;
+			document.onkeydown = function(e){
+				if(window.event == undefined){
+					var key = e.keyCode;
+				}else{
+					var key = window.event.keyCode;
+				}
+				if(key == 13){
+					_self.loginEnter('loginData');
+				}
+			}
+		}
   }
 </script>
 <style rel="stylesheet/scss" lang="scss">

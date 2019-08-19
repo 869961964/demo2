@@ -12,6 +12,7 @@ import limit from '@/views/limit'//权限展示页面
 import limitEdit from '@/views/limitEdit'//权限编辑页面
 import modfiyLimit from '@/views/modfiyLimit'//用户权限修改页面
 import app from '@/views/app'//app用户推送信息
+import userList from '@/views/userList'//用户列表
 Vue.use(Router)
 
 export default new Router({
@@ -72,6 +73,11 @@ export default new Router({
 					path:'app',
 					name:'app',
 					component:app
+				},
+				{
+					path:'userList',
+					name:'userList',
+					component:userList
 				}
 			]
 		}

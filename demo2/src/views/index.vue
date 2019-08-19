@@ -25,8 +25,8 @@
 			<el-col :span="4"><div class="data_list"><span class="data_num">180</span> 管理员</div></el-col>
 		</el-row> -->
 	</section>
-		<div id="myChart" style="width: 900px; height: 550px;margin-top: -50px;"></div>
-		
+		<!-- <div id="myChart" style="width: 900px; height: 550px;margin-top: -50px;"></div>
+		 -->
 	 </div>
 </template>
 
